@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Bittu Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(249, 115, 22, 0.3);
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* === KPI CARDS === */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        .kpi-card.revenue {
+            border-left-color: #10b981;
+        }
+
+        .kpi-card.commission {
+            border-left-color: #f97316;
+        }
+
+        .kpi-card.sellers {
+            border-left-color: #3b82f6;
+        }
+
+        .kpi-card.users {
+            border-left-color: #8b5cf6;
+        }
+
+        .kpi-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .kpi-label {
+            color: #666;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .kpi-change {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .kpi-change.positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .kpi-change.negative {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        /* === CHARTS SECTION === */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-bottom: 2px solid #f97316;
+            padding-bottom: 10px;
+        }
+
+        /* Mini Chart */
+        .mini-chart {
+            height: 250px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 10px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            min-height: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+        }
+
+        .chart-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .chart-bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* === COMMISSION LEDGER === */
+        .ledger-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .ledger-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 22px;
+            border-bottom: 3px solid #f97316;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Ledger Filter */
+        .ledger-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+        }
+
+        .ledger-table {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            background: #f8f9fa;
+        }
+
+        table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #555;
+        }
+
+        table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .seller-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .commission-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .commission-status.paid {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .commission-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .commission-status.disputed {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        /* === ACTION BUTTONS === */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #f97316;
+            border: 2px solid #f97316;
+        }
+
+        .btn-secondary:hover {
+            background: #f97316;
+            color: white;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        /* === STATS BREAKDOWN === */
+        .stats-breakdown {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-breakdown h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 3px solid #f97316;
+            padding-bottom: 15px;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .breakdown-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f97316;
+        }
+
+        .breakdown-label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .breakdown-value {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .breakdown-percentage {
+            font-size: 12px;
+            color: #f97316;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .ledger-filter {
+                flex-direction: column;
+            }
+
+            .filter-input {
+                width: 100%;
+            }
+
+            .action-buttons {
+                justify-content: flex-start;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            table th, table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>👨‍💼 Admin Dashboard - Bittu Store</h1>
+            <p>Revenue Analytics, Commission Management & Seller Performance</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card revenue">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-label">Total Revenue</div>
+                <div class="kpi-value">₹24,58,500</div>
+                <span class="kpi-change positive">📈 +12.5% this month</span>
+            </div>
+
+            <div class="kpi-card commission">
+                <div class="kpi-icon">🎯</div>
+                <div class="kpi-label">Total Commission (20%)</div>
+                <div class="kpi-value">₹4,91,700</div>
+                <span class="kpi-change positive">📈 +12.5% this month</span>
+            </div>
+
+            <div class="kpi-card sellers">
+                <div class="kpi-icon">🏪</div>
+                <div class="kpi-label">Active Sellers</div>
+                <div class="kpi-value">45</div>
+                <span class="kpi-change positive">📈 +3 new sellers</span>
+            </div>
+
+            <div class="kpi-card users">
+                <div class="kpi-icon">👥</div>
+                <div class="kpi-label">Total Customers</div>
+                <div class="kpi-value">8,234</div>
+                <span class="kpi-change positive">📈 +4.2% this month</span>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <!-- Revenue Chart -->
+            <div class="chart-card">
+                <h3>📊 Monthly Revenue Trend</h3>
+                <div class="mini-chart">
+                    <div class="chart-bar" style="height: 45%;" title="January">
+                        <div class="chart-bar-value">₹18L</div>
+                        <div class="chart-bar-label">Jan</div>
+                    </div>
+                    <div class="chart-bar" style="height: 60%;" title="February">
+                        <div class="chart-bar-value">₹22L</div>
+                        <div class="chart-bar-label">Feb</div>
+                    </div>
+                    <div class="chart-bar" style="height: 55%;" title="March">
+                        <div class="chart-bar-value">₹20L</div>
+                        <div class="chart-bar-label">Mar</div>
+                    </div>
+                    <div class="chart-bar" style="height: 75%;" title="April">
+                        <div class="chart-bar-value">₹25L</div>
+                        <div class="chart-bar-label">Apr</div>
+                    </div>
+                    <div class="chart-bar" style="height: 80%;" title="May">
+                        <div class="chart-bar-value">₹27L</div>
+                        <div class="chart-bar-label">May</div>
+                    </div>
+                    <div class="chart-bar" style="height: 100%;" title="June">
+                        <div class="chart-bar-value">₹29L</div>
+                        <div class="chart-bar-label">Jun</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commission Chart -->
+            <div class="chart-card">
+                <h3>🎯 Commission Distribution (20%)</h3>
+                <div class="mini-chart">
+                    <div class="chart-bar" style="height: 45%; background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);" title="Electronics">
+                        <div class="chart-bar-value">₹95K</div>
+                        <div class="chart-bar-label">Electronics</div>
+                    </div>
+                    <div class="chart-bar" style="height: 55%; background: linear-gradient(180deg, #8b5cf6 0%, #5b21b6 100%);" title="Fashion">
+                        <div class="chart-bar-value">₹112K</div>
+                        <div class="chart-bar-label">Fashion</div>
+                    </div>
+                    <div class="chart-bar" style="height: 40%; background: linear-gradient(180deg, #ec4899 0%, #be185d 100%);" title="Home">
+                        <div class="chart-bar-value">₹78K</div>
+                        <div class="chart-bar-label">Home</div>
+                    </div>
+                    <div class="chart-bar" style="height: 70%; background: linear-gradient(180deg, #10b981 0%, #047857 100%);" title="Sports">
+                        <div class="chart-bar-value">₹135K</div>
+                        <div class="chart-bar-label">Sports</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commission Ledger -->
+        <div class="ledger-section">
+            <h2>💳 Commission Ledger & Payment Tracking</h2>
+
+            <div class="ledger-filter">
+                <input type="text" class="filter-input" placeholder="🔍 Search Seller Name...">
+                <select class="filter-input">
+                    <option>Filter by Status</option>
+                    <option>Paid</option>
+                    <option>Pending</option>
+                    <option>Disputed</option>
+                </select>
+                <select class="filter-input">
+                    <option>Filter by Month</option>
+                    <option>August 2026</option>
+                    <option>July 2026</option>
+                    <option>June 2026</option>
+                </select>
+                <button class="btn btn-primary">🔍 Filter</button>
+            </div>
+
+            <div class="ledger-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Seller Name</th>
+                            <th>Gross Sales</th>
+                            <th>Commission (20%)</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                            <th>Amount Paid</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="seller-name">📱 TechHub Solutions</td>
+                            <td>₹4,50,000</td>
+                            <td>₹90,000</td>
+                            <td><span class="commission-status paid">✅ Paid</span></td>
+                            <td>Aug 25, 2026</td>
+                            <td>₹90,000</td>
+                            <td><button class="btn btn-sm btn-secondary" onclick="viewDetails('TechHub')">📄 Details</button></td>
+                        </tr>
+                        <tr>
+                            <td class="seller-name">👗 Fashion World</td>
+                            <td>₹3,25,000</td>
+                            <td>₹65,000</td>
+                            <td><span class="commission-status paid">✅ Paid</span></td>
+                            <td>Aug 24, 2026</td>
+                            <td>₹65,000</td>
+                            <td><button class="btn btn-sm btn-secondary" onclick="viewDetails('Fashion')">📄 Details</button></td>
+                        </tr>
+                        <tr>
+                            <td class="seller-name">🏠 Home Essentials</td>
+                            <td>₹2,80,000</td>
+                            <td>₹56,000</td>
+                            <td><span class="commission-status pending">⏳ Pending</span></td>
+                            <td>Due: Aug 30, 2026</td>
+                            <td>-</td>
+                            <td><button class="btn btn-sm btn-success" onclick="processPayment('Home')">💳 Pay Now</button></td>
+                        </tr>
+                        <tr>
+                            <td class="seller-name">⚽ Sports Gear</td>
+                            <td>₹5,10,000</td>
+                            <td>₹1,02,000</td>
+                            <td><span class="commission-status paid">✅ Paid</span></td>
+                            <td>Aug 23, 2026</td>
+                            <td>₹1,02,000</td>
+                            <td><button class="btn btn-sm btn-secondary" onclick="viewDetails('Sports')">📄 Details</button></td>
+                        </tr>
+                        <tr>
+                            <td class="seller-name">📚 Book Haven</td>
+                            <td>₹1,85,000</td>
+                            <td>₹37,000</td>
+                            <td><span class="commission-status disputed">⚠️ Disputed</span></td>
+                            <td>Pending Resolution</td>
+                            <td>-</td>
+                            <td><button class="btn btn-sm btn-secondary" onclick="resolveDispute('Book')">🔧 Resolve</button></td>
+                        </tr>
+                        <tr>
+                            <td class="seller-name">🎮 Gaming Zone</td>
+                            <td>₹3,80,000</td>
+                            <td>₹76,000</td>
+                            <td><span class="commission-status pending">⏳ Pending</span></td>
+                            <td>Due: Aug 31, 2026</td>
+                            <td>-</td>
+                            <td><button class="btn btn-sm btn-success" onclick="processPayment('Gaming')">💳 Pay Now</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-buttons" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="bulkPayment()">💰 Process Bulk Payments</button>
+                <button class="btn btn-secondary" onclick="downloadLedger()">📥 Download Ledger</button>
+                <button class="btn btn-secondary" onclick="generateReport()">📊 Generate Report</button>
+            </div>
+        </div>
+
+        <!-- Stats Breakdown -->
+        <div class="stats-breakdown" style="margin-top: 30px;">
+            <h2>📈 Performance Breakdown</h2>
+            <div class="breakdown-grid">
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Total Orders Processed</div>
+                    <div class="breakdown-value">12,450</div>
+                    <div class="breakdown-percentage">↑ 8.3% vs last month</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Average Order Value</div>
+                    <div class="breakdown-value">₹1,975</div>
+                    <div class="breakdown-percentage">↑ 5.1% vs last month</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Delivery Success Rate</div>
+                    <div class="breakdown-value">98.5%</div>
+                    <div class="breakdown-percentage">↑ 1.2% vs last month</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Customer Satisfaction</div>
+                    <div class="breakdown-value">4.7/5.0</div>
+                    <div class="breakdown-percentage">↑ 0.3 points vs last month</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Return Rate</div>
+                    <div class="breakdown-value">2.3%</div>
+                    <div class="breakdown-percentage">↓ 0.5% vs last month</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-label">Dispute Resolution Time</div>
+                    <div class="breakdown-value">3.2 days</div>
+                    <div class="breakdown-percentage">↓ Faster by 0.8 days</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewDetails(seller) {
+            alert(`📄 Commission Details for ${seller}\n\nShowing:\n✓ Monthly breakdown\n✓ Category-wise sales\n✓ Payment history\n✓ Transaction receipts`);
+        }
+
+        function processPayment(seller) {
+            alert(`💳 Processing Payment for ${seller}\n\n✓ Payment initiated\n✓ Bank transfer in progress\n✓ Payment receipt sent to email\n✓ Expected completion: 2-3 business days`);
+        }
+
+        function resolveDispute(seller) {
+            alert(`🔧 Dispute Resolution for ${seller}\n\nOptions:\n1. Review order details\n2. Check customer complaint\n3. Approve/Reject commission\n4. Issue refund if needed`);
+        }
+
+        function bulkPayment() {
+            alert(`💰 Bulk Payment Processing\n\nReady to pay:\n✓ 3 sellers pending payment\n✓ Total amount: ₹2,69,000\n✓ Estimated completion: 4-5 business days\n\nProceed with payment? This will deduct amount from Bittu Store account.`);
+        }
+
+        function downloadLedger() {
+            alert(`📥 Downloading Ledger\n\nFormat: Excel (.xlsx)\nIncludes:\n✓ All transactions\n✓ Payment status\n✓ Commission calculations\n✓ Tax details\n\nFile: Commission_Ledger_Aug2026.xlsx`);
+        }
+
+        function generateReport() {
+            alert(`📊 Generating Report\n\nReport will include:\n✓ Revenue analytics\n✓ Commission breakdown\n✓ Seller performance ranking\n✓ Growth trends\n✓ Tax summary\n\nReport will be sent to admin@bittustore.com`);
+        }
+    </script>
+</body>
+</html>
