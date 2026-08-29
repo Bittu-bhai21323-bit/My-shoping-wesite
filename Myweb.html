@@ -3,34 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bittu Store - Multi-Vendor Marketplace</title>
+    <title>Bittu Store - Multi-Vendor Marketplace (All Features)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 antialiased">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-indigo-600 text-white text-xs sm:text-sm text-center py-2 px-4 font-medium flex justify-center items-center gap-3">
-        <span>🎉 Multi-Vendor Platform: Sellers can list products & attach custom UPI QR Codes!</span>
-        <button onclick="switchTab('seller'); toggleMenu();" class="bg-white text-indigo-600 px-3 py-0.5 rounded-full text-xs font-bold shadow hover:bg-indigo-50 transition">Seller Portal</button>
+    <!-- Top Bar with Role Switcher -->
+    <div class="bg-indigo-600 text-white text-sm text-center py-2 px-4 flex items-center justify-between">
+        <div class="flex items-center gap-3 mx-auto">
+            <span>🎉 Multi-Vendor Platform: Sellers can list products & attach custom UPI QR Codes!</span>
+        </div>
+        <div class="pr-4">
+            <label class="text-xs mr-2">Role:</label>
+            <select id="roleSelect" class="rounded px-2 py-1 text-sm">
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
     </div>
 
-    <!-- Main Header -->
+    <!-- Header -->
     <header class="sticky top-0 z-40 bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <span onclick="switchTab('buyer')" class="text-2xl font-black text-indigo-600 tracking-tight cursor-pointer">Bittu Store</span>
             </div>
-            
-            <!-- Right Side Action Icons & Menu Button -->
             <div class="flex items-center space-x-3">
-                <!-- Cart Icon -->
                 <button onclick="toggleCart()" class="relative text-gray-600 hover:text-indigo-600 transition p-2">
                     <i class="fa-solid fa-cart-shopping text-xl"></i>
                     <span id="cartCount" class="absolute top-0 right-0 bg-indigo-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
                 </button>
-                
-                <!-- Burger Menu Button (Right Side) -->
                 <button onclick="toggleMenu()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2.5 rounded-xl transition flex items-center justify-center w-10 h-10 shadow-sm">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
@@ -38,7 +42,7 @@
         </div>
     </header>
 
-    <!-- RIGHT SIDE MENU DRAWER -->
+    <!-- Side Menu -->
     <div id="rightMenu" class="fixed inset-y-0 right-0 z-50 w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
         <div class="p-4 bg-indigo-600 text-white flex items-center justify-between">
             <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-bars-staggered"></i> Store Menu</h3>
@@ -46,13 +50,13 @@
         </div>
         <div class="flex-1 overflow-y-auto p-4 space-y-2">
             <button onclick="switchTab('buyer'); toggleMenu();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                <i class="fa-solid fa-store w-6 text-center text-indigo-600"></i> Buyer Shop (Browse Products)
+                <i class="fa-solid fa-store w-6 text-center text-indigo-600"></i> Buyer Shop
             </button>
             <button onclick="switchTab('seller'); toggleMenu();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                <i class="fa-solid fa-cloud-arrow-up w-6 text-center text-indigo-600"></i> Seller Dashboard (Upload Product & QR)
+                <i class="fa-solid fa-cloud-arrow-up w-6 text-center text-indigo-600"></i> Seller Dashboard
             </button>
             <button onclick="switchTab('orders'); toggleMenu();" class="w-full text-left flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 text-gray-700 hover:text-indigo-600 font-semibold transition">
-                <i class="fa-solid fa-receipt w-6 text-center text-indigo-600"></i> My Orders & Customer Addresses
+                <i class="fa-solid fa-receipt w-6 text-center text-indigo-600"></i> Orders
             </button>
             <hr class="my-3 border-gray-100">
             <div class="p-3 bg-gray-50 rounded-xl">
@@ -60,12 +64,10 @@
                 <p class="text-sm font-extrabold text-indigo-600 mt-0.5" id="menuSellerId">SELLER-8821</p>
             </div>
         </div>
-        <div class="p-4 border-t border-gray-200 bg-gray-50 text-center text-xs text-gray-500">
-            Bittu Store Multi-Vendor v2.0
-        </div>
+        <div class="p-4 border-t border-gray-200 bg-gray-50 text-center text-xs text-gray-500">Bittu Store Multi-Vendor v2.0</div>
     </div>
 
-    <!-- TAB 1: BUYER SHOP VIEW -->
+    <!-- Main buyer view -->
     <div id="buyerView" class="tab-content">
         <section class="bg-gradient-to-r from-indigo-900 to-indigo-700 text-white py-14 px-4 text-center">
             <div class="max-w-3xl mx-auto">
@@ -81,14 +83,26 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
                 <h2 class="text-2xl font-bold text-gray-900">Live Marketplace Products</h2>
+                <div class="flex items-center gap-3">
+                    <select id="filterCategory" class="px-3 py-2 border rounded text-sm">
+                        <option value="all">All Categories</option>
+                    </select>
+                    <input id="minPrice" type="number" placeholder="Min" class="w-20 px-2 py-2 border rounded text-sm">
+                    <input id="maxPrice" type="number" placeholder="Max" class="w-20 px-2 py-2 border rounded text-sm">
+                    <select id="sortSelect" class="px-3 py-2 border rounded text-sm">
+                        <option value="newest">Newest</option>
+                        <option value="price-asc">Price: Low → High</option>
+                        <option value="price-desc">Price: High → Low</option>
+                    </select>
+                    <button onclick="applyFilters()" class="px-3 py-2 bg-indigo-600 text-white rounded">Apply</button>
+                    <button onclick="resetFilters()" class="px-3 py-2 border rounded">Reset</button>
+                </div>
             </div>
-            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Products loaded dynamically -->
-            </div>
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </main>
     </div>
 
-    <!-- TAB 2: SELLER PORTAL / DASHBOARD -->
+    <!-- Seller view -->
     <div id="sellerView" class="tab-content hidden max-w-5xl mx-auto px-4 py-8">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
             <div class="bg-indigo-600 text-white p-6 flex justify-between items-center flex-wrap gap-4">
@@ -96,100 +110,92 @@
                     <h2 class="text-2xl font-bold">Seller Dashboard & Product Manager</h2>
                     <p class="text-indigo-200 text-sm">List items and attach your custom UPI Scanner QR code.</p>
                 </div>
-                <div class="bg-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold">
-                    Seller ID: <span id="currentSellerId">SELLER-8821</span>
-                </div>
+                <div class="bg-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold">Seller ID: <span id="currentSellerId">SELLER-8821</span></div>
             </div>
-
             <div class="p-6 sm:p-8">
-                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-indigo-600"></i> Add New Product & UPI QR
-                </h3>
-                <form id="addProductForm" onsubmit="handleProductUpload(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-plus-circle text-indigo-600"></i> Add New Product & UPI QR</h3>
+                <form id="addProductForm" class="grid grid-cols-1 sm:grid-cols-2 gap-6" onsubmit="handleProductUpload(event)">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Product Name</label>
-                        <input type="text" id="pName" required placeholder="e.g. Smart Watch / Handloom Kurti" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
+                        <input type="text" id="pName" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
-                        <select id="pCategory" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
-                            <option value="Fashion">Fashion & Clothing</option>
-                            <option value="Electronics">Electronics & Gadgets</option>
-                            <option value="Home Decor">Home Decor & Gifts</option>
-                            <option value="Groceries">Groceries & Sweets</option>
+                        <select id="pCategory" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
+                            <option>Fashion</option>
+                            <option>Electronics</option>
+                            <option>Home Decor</option>
+                            <option>Groceries</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Price (₹)</label>
-                        <input type="number" id="pPrice" required placeholder="349" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
+                        <input type="number" id="pPrice" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">MRP Price (₹)</label>
-                        <input type="number" id="pOldPrice" required placeholder="599" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
+                        <input type="number" id="pOldPrice" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
                     </div>
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Product Image URL</label>
-                        <input type="url" id="pImage" required placeholder="https://images.unsplash.com/..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Product Image URL or Upload</label>
+                        <input type="url" id="pImage" placeholder="https://..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
+                        <input type="file" id="pImageFile" accept="image/*" class="mt-2">
+                        <img id="imagePreview" src="" class="mt-2 w-40 h-40 object-cover rounded hidden"/>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Shop / Seller Name</label>
-                        <input type="text" id="pSellerName" required value="Bittu Trendz Store" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
+                        <input type="text" id="pSellerName" required value="Bittu Trendz Store" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Your Payment Scanner (UPI QR Image URL)</label>
-                        <input type="url" id="pQrCode" required placeholder="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500">
+                        <input type="url" id="pQrCode" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
                     </div>
                     <div class="sm:col-span-2">
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-lg shadow transition">
-                            Publish Product to Marketplace
-                        </button>
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-lg shadow transition">Publish Product</button>
                     </div>
                 </form>
+                <div class="mt-4 flex gap-2">
+                    <button class="px-3 py-2 bg-white border rounded" onclick="exportSellerProducts()">Export Products CSV</button>
+                </div>
             </div>
         </div>
-
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-lg font-bold text-gray-800 mb-4">Your Listed Products</h3>
             <div id="sellerProductsList" class="space-y-4"></div>
         </div>
     </div>
 
-    <!-- TAB 3: ORDERS & CUSTOMER ADDRESS TRACKER -->
+    <!-- Orders view -->
     <div id="ordersView" class="tab-content hidden max-w-5xl mx-auto px-4 py-8">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
             <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900">Customer Orders & Delivery Addresses</h2>
-                    <p class="text-sm text-gray-500">When buyers pay via your QR and place orders, their delivery address details appear here.</p>
+                    <p class="text-sm text-gray-500">Orders appear here. Sellers and admins can update statuses.</p>
                 </div>
-                <button onclick="loadOrders()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold transition">
-                    <i class="fa-solid fa-rotate"></i> Refresh
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="loadOrders()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-semibold">Refresh</button>
+                    <button onclick="exportOrders()" class="bg-white border px-4 py-2 rounded">Export Orders CSV</button>
+                </div>
             </div>
             <div id="ordersContainer" class="space-y-6"></div>
         </div>
     </div>
 
-    <!-- Cart Sidebar -->
+    <!-- Cart Sidebar and Checkout Modal (omitted here for brevity, will be handled by JS functions) -->
     <div id="cartSidebar" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
         <div class="p-4 bg-indigo-600 text-white flex items-center justify-between">
             <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h3>
             <button onclick="toggleCart()" class="text-white hover:text-gray-200 text-xl font-bold">&times;</button>
         </div>
-        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
-            <p class="text-gray-500 text-center py-12">Your cart is empty.</p>
-        </div>
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-4"><p class="text-gray-500 text-center py-12">Your cart is empty.</p></div>
         <div class="p-4 border-t border-gray-200 bg-gray-50">
-            <div class="flex justify-between mb-4 text-base font-extrabold">
-                <span>Total Amount</span>
-                <span id="cartTotal" class="text-indigo-600">₹0</span>
-            </div>
-            <button onclick="openCheckoutModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold shadow transition">Proceed to Checkout & Seller QR Payment</button>
+            <div class="flex justify-between mb-4 text-base font-extrabold"><span>Total Amount</span><span id="cartTotal" class="text-indigo-600">₹0</span></div>
+            <button onclick="openCheckoutModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold shadow transition">Checkout</button>
         </div>
     </div>
 
-    <!-- CHECKOUT MODAL -->
-    <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-white w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
             <div class="bg-indigo-600 text-white p-4 flex justify-between items-center">
                 <h3 class="font-bold text-lg"><i class="fa-solid fa-shield-halved"></i> Checkout & Seller QR Payment</h3>
@@ -199,97 +205,149 @@
                 <div>
                     <h4 class="font-bold text-gray-800 text-sm mb-3 uppercase">1. Delivery Address</h4>
                     <form id="checkoutForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input type="text" id="custName" required placeholder="Full Name" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-                        <input type="tel" id="custPhone" required placeholder="Mobile Number" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-                        <textarea id="custAddress" required rows="2" placeholder="Complete Address, Landmark..." class="sm:col-span-2 bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500"></textarea>
-                        <input type="text" id="custCity" required placeholder="City" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-                        <input type="text" id="custPincode" required placeholder="Pincode" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+                        <input type="text" id="custName" required placeholder="Full Name" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm">
+                        <input type="tel" id="custPhone" required placeholder="Mobile Number" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm">
+                        <textarea id="custAddress" required rows="2" placeholder="Complete Address" class="sm:col-span-2 bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm"></textarea>
+                        <input type="text" id="custCity" required placeholder="City" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm">
+                        <input type="text" id="custPincode" required placeholder="Pincode" class="bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm">
                     </form>
                 </div>
                 <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4">
-                    <h4 class="font-bold text-indigo-900 text-sm mb-2"><i class="fa-solid fa-qrcode"></i> 2. Scan Seller's Payment QR & Pay</h4>
+                    <h4 class="font-bold text-indigo-900 text-sm mb-2"><i class="fa-solid fa-qrcode"></i> 2. Seller QR</h4>
                     <div id="sellerQrDisplayArea" class="flex flex-col items-center justify-center bg-white p-4 rounded-xl border border-indigo-200 shadow-sm"></div>
+                    <div class="mt-3 flex gap-2 justify-center">
+                        <button onclick="openCameraForQr()" class="px-3 py-2 border rounded">Scan QR (Camera)</button>
+                        <input id="qrFileInput" type="file" accept="image/*" class="hidden" onchange="handleQrFile(event)">
+                        <button onclick="document.getElementById('qrFileInput').click()" class="px-3 py-2 border rounded">Upload QR Image</button>
+                    </div>
                 </div>
                 <div>
-                    <h4 class="font-bold text-gray-800 text-sm mb-2">3. Enter UPI Transaction ID / UTR</h4>
-                    <input type="text" id="upiTxnId" required placeholder="e.g. UPI/239482934823" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm outline-none focus:border-indigo-500 font-mono">
+                    <h4 class="font-bold text-gray-800 text-sm mb-2">3. Enter UPI Transaction ID</h4>
+                    <input type="text" id="upiTxnId" required placeholder="e.g. UPI/239482934823" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm">
                 </div>
-                <button onclick="completeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-lg shadow-lg transition">
-                    Confirm Order & Send Address to Seller ✓
-                </button>
+                <button onclick="completeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-lg shadow-lg transition">Confirm Order & Send Address to Seller ✓</button>
             </div>
         </div>
     </div>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/919876543210?text=Hello%20Bittu%20Store%20Support" target="_blank" class="fixed bottom-6 right-6 z-30 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl text-2xl transition transform hover:scale-110">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/919876543210?text=Hello%20Bittu%20Store%20Support" target="_blank" class="fixed bottom-6 right-6 z-30 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <!-- Script Logic -->
+    <script src="assets/js/storage.js"></script>
     <script>
-        let products = [
-            {
-                id: 1,
-                name: "Classic Smartwatch with Fitness Tracker",
-                category: "Electronics",
-                price: 1299,
-                oldPrice: 2499,
-                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60",
-                sellerName: "Bittu Trendz Store",
-                sellerId: "SELLER-8821",
-                qrCode: "https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
-            }
-        ];
+    // Application script: uses Storage helpers
+    const STORAGE_KEYS = { products: 'products', cart: 'cart', orders: 'orders', reviews: 'reviews' };
 
-        let cart = [];
-        let orders = [];
-
-        function toggleMenu() {
-            document.getElementById('rightMenu').classList.toggle('translate-x-full');
+    // seed default sample product if products empty
+    function seedIfEmpty() {
+        let products = Storage.load('products', []);
+        if (!products || products.length === 0) {
+            products = [
+                { id:1, name:'Classic Smartwatch', category:'Electronics', price:1299, oldPrice:2499, image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500', sellerName:'Bittu Trendz Store', sellerId:'SELLER-8821', qrCode:'https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg', created: Date.now(), reviews: [] }
+            ];
+            Storage.save('products', products);
         }
+    }
 
-        function switchTab(tab) {
-            document.getElementById('buyerView').classList.add('hidden');
-            document.getElementById('sellerView').classList.add('hidden');
-            document.getElementById('ordersView').classList.add('hidden');
+    seedIfEmpty();
 
-            if(tab === 'buyer') {
-                document.getElementById('buyerView').classList.remove('hidden');
-                renderProducts(products);
-            } else if(tab === 'seller') {
-                document.getElementById('sellerView').classList.remove('hidden');
-                renderSellerProducts();
-            } else if(tab === 'orders') {
-                document.getElementById('ordersView').classList.remove('hidden');
-                loadOrders();
-            }
-        }
+    // Role switcher
+    const roleSelect = document.getElementById('roleSelect');
+    roleSelect.value = localStorage.getItem('appRole') || 'buyer';
+    roleSelect.addEventListener('change', e => { localStorage.setItem('appRole', e.target.value); applyRole(e.target.value); });
+    function applyRole(role) {
+        // show/hide UI pieces — for simplicity we just switch tabs
+        if (role === 'buyer') switchTab('buyer');
+        if (role === 'seller') switchTab('seller');
+        if (role === 'admin') switchTab('orders');
+    }
+    applyRole(roleSelect.value);
 
-        function renderProducts(items) {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            if(items.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">No products available.</p>`;
-                return;
-            }
-            items.forEach(p => {
-                const discount = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
-                grid.innerHTML += `
-                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden flex flex-col transition group">
-                        <div class="relative overflow-hidden bg-gray-100 aspect-square">
-                            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-2 left-2 bg-pink-500 text-white text-xs font-bold px-2 py-1 rounded">-${discount}%</span>
-                            <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded backdrop-blur">By: ${p.sellerName}</span>
-                        </div>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <div>
-                                <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">${p.category}</span>
-                                <h3 class="font-semibold text-gray-800 mt-1 mb-2 line-clamp-2 text-sm">${p.name}</h3>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-lg font-bold text-gray-900">₹${p.price}</span>
-                                    <span class="text-sm text-gray-400 line-through">₹${p.oldPrice}</span>
-                                </div>
-                                <button onclick="addToCart(${p.id})" class="w-full bg-indigo-50 hover:bg-indigo-600 text-indigo-600 hover:text-white font-medium py-2 rounded-lg text-sm transition f
+    // Basic state
+    let products = Storage.load('products', []);
+    let cart = Storage.load('cart', []);
+    let orders = Storage.load('orders', []);
+
+    function persistAll() { Storage.save('products', products); Storage.save('cart', cart); Storage.save('orders', orders); }
+
+    // Filters: populate categories
+    function populateCategoryFilter() {
+        const sel = document.getElementById('filterCategory');
+        const cats = Array.from(new Set(products.map(p => p.category))).sort();
+        sel.innerHTML = '<option value="all">All Categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    populateCategoryFilter();
+
+    function renderProducts(items) {
+        const grid = document.getElementById('productGrid'); grid.innerHTML = '';
+        if (!items || items.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">No products available.</p>`; return; }
+        items.forEach(p => {
+            const discount = p.oldPrice ? Math.round(((p.oldPrice - p.price)/p.oldPrice)*100) : 0;
+            const el = document.createElement('div'); el.className = 'bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden flex flex-col transition group';
+            el.innerHTML = `
+                <div class="relative overflow-hidden bg-gray-100 aspect-square"><img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover"><span class="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded">By: ${p.sellerName}</span></div>
+                <div class="p-4 flex-1 flex flex-col justify-between">
+                  <div><span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">${p.category}</span><h3 class="font-semibold text-gray-800 mt-1 mb-2 line-clamp-2 text-sm">${p.name}</h3></div>
+                  <div><div class="flex items-center gap-2 mb-3"><span class="text-lg font-bold text-gray-900">₹${p.price}</span>${p.oldPrice?`<span class="text-sm text-gray-400 line-through">₹${p.oldPrice}</span>`:''}</div>
+                  <div class="flex gap-2"><button onclick="addToCart(${p.id})" class="w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg text-sm">Add to Cart</button><button onclick="openProductQuickView(${p.id})" class="w-1/2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-2 rounded-lg text-sm">View & Pay QR</button></div></div>
+                </div>`;
+            grid.appendChild(el);
+        });
+    }
+
+    function renderAllProducts() { products = Storage.load('products', []); populateCategoryFilter(); renderProducts(products); }
+    renderAllProducts();
+
+    // Cart functions
+    function addToCart(id) {
+        const p = products.find(x=>x.id===id); if(!p) return; const c = cart.find(i=>i.id===id); if(c) c.qty++; else cart.push({...p, qty:1}); persistAll(); updateCartCount(); renderCartItems(); alert('Added to cart'); }
+    function updateCartCount(){ const cnt = cart.reduce((s,i)=>s+i.qty,0); document.getElementById('cartCount').textContent = cnt; const total = cart.reduce((s,i)=>s+i.price*i.qty,0); document.getElementById('cartTotal').textContent = `₹${total}`; }
+    function renderCartItems(){ const container=document.getElementById('cartItemsContainer'); container.innerHTML=''; if(cart.length===0){container.innerHTML=`<p class="text-gray-500 text-center py-12">Your cart is empty.</p>`; document.getElementById('cartTotal').textContent='₹0'; return;} cart.forEach(item=>{ const el=document.createElement('div'); el.className='flex items-center gap-3'; el.innerHTML=`<img src="${item.image}" class="w-16 h-16 object-cover rounded"><div class="flex-1"><div class="font-semibold text-sm">${item.name}</div><div class="text-xs text-gray-500">By ${item.sellerName}</div><div class="text-sm font-bold mt-1">₹${item.price} x ${item.qty}</div></div><div class="flex flex-col gap-2"><button onclick="changeQty(${item.id},1)" class="px-2 py-1 bg-gray-100 rounded">+</button><button onclick="changeQty(${item.id},-1)" class="px-2 py-1 bg-gray-100 rounded">-</button></div>`; container.appendChild(el); }); updateCartCount(); }
+    function changeQty(id,delta){ const idx=cart.findIndex(i=>i.id===id); if(idx===-1) return; cart[idx].qty+=delta; if(cart[idx].qty<=0) cart.splice(idx,1); persistAll(); renderCartItems(); }
+    function toggleCart(){ document.getElementById('cartSidebar').classList.toggle('translate-x-full'); renderCartItems(); }
+
+    // Quick view and checkout
+    function openProductQuickView(id){ const p = products.find(x=>x.id===id); if(!p) return; document.getElementById('sellerQrDisplayArea').innerHTML=`<img src="${p.qrCode}" alt="QR" class="w-48 h-48 object-contain"><div class="mt-3 text-sm text-gray-700">Pay to <strong>${p.sellerName}</strong></div>`; openCheckoutModal(); }
+    function openCheckoutModal(){ document.getElementById('checkoutModal').classList.remove('hidden'); document.getElementById('checkoutModal').classList.add('flex'); }
+    function closeCheckoutModal(){ document.getElementById('checkoutModal').classList.add('hidden'); document.getElementById('checkoutModal').classList.remove('flex'); }
+
+    function completeOrder(){ const name=document.getElementById('custName').value.trim(); const phone=document.getElementById('custPhone').value.trim(); const address=document.getElementById('custAddress').value.trim(); const city=document.getElementById('custCity').value.trim(); const pin=document.getElementById('custPincode').value.trim(); const upi=document.getElementById('upiTxnId').value.trim(); if(!name||!phone||!address||!city||!pin||!upi) return alert('Fill all fields'); if(cart.length===0) return alert('Cart empty'); const total=cart.reduce((s,i)=>s+i.price*i.qty,0); const id=`ORD${1000+orders.length+1}`; const ord={id,customer:name,phone,address:`${address}, ${city} - ${pin}`,items:cart.map(i=>({id:i.id,name:i.name,qty:i.qty,seller:i.sellerName})),amount:total,upi,created:Date.now(),status:'Pending'}; orders.push(ord); persistAll(); cart=[]; persistAll(); renderCartItems(); updateCartCount(); closeCheckoutModal(); alert(`Order ${id} placed`); }
+
+    // Orders render and seller/admin actions
+    function loadOrders(){ orders = Storage.load('orders', []); const c=document.getElementById('ordersContainer'); c.innerHTML=''; if(!orders||orders.length===0){ c.innerHTML='<p class="text-gray-500 text-center">No orders yet.</p>'; return;} orders.slice().reverse().forEach(o=>{ const el=document.createElement('div'); el.className='bg-gray-50 p-4 rounded-lg'; el.innerHTML=`<div class="flex justify-between"><div><div class="font-bold">${o.id} • ${o.customer}</div><div class="text-xs text-gray-500">${new Date(o.created).toLocaleString()} • ${o.phone}</div><div class="mt-2 text-sm">${o.items.map(it=>`<div>${it.qty} × ${it.name} <span class="text-xs text-gray-400">(${it.seller})</span></div>`).join('')}</div></div><div class="text-right"><div class="font-bold text-indigo-600">₹${o.amount}</div><div class="text-xs text-gray-500">${o.status}</div><div class="mt-2 flex flex-col gap-2"><button onclick="updateOrderStatus('${o.id}','Shipped')" class="px-3 py-1 bg-blue-100 rounded">Mark Shipped</button><button onclick="updateOrderStatus('${o.id}','Delivered')" class="px-3 py-1 bg-green-100 rounded">Mark Delivered</button><button onclick="updateOrderStatus('${o.id}','Cancelled')" class="px-3 py-1 bg-red-100 rounded">Cancel</button></div></div></div>`; c.appendChild(el); }); }
+    function updateOrderStatus(id,status){ const idx=orders.findIndex(o=>o.id===id); if(idx===-1) return; orders[idx].status=status; persistAll(); loadOrders(); alert(`Order ${id} marked ${status}`); }
+
+    // Export utilities
+    function exportOrders(){ const rows = orders.map(o=>({ OrderID:o.id, Customer:o.customer, Phone:o.phone, Address:o.address, Amount:o.amount, Status:o.status, UPI:o.upi, Created:new Date(o.created).toLocaleString() })); Storage.downloadCSV('orders.csv', rows); }
+    function exportSellerProducts(){ const sellerId = document.getElementById('currentSellerId').textContent; const rows = products.filter(p=>p.sellerId===sellerId).map(p=>({ID:p.id,Name:p.name,Category:p.category,Price:p.price,OldPrice:p.oldPrice,Seller:p.sellerName,QR:p.qrCode})); Storage.downloadCSV('seller-products.csv', rows); }
+
+    // Filters
+    function applyFilters(){ const cat=document.getElementById('filterCategory').value; const min=Number(document.getElementById('minPrice').value || 0); const max=Number(document.getElementById('maxPrice').value || Infinity); const sort=document.getElementById('sortSelect').value; let items = products.slice(); if(cat!=='all') items = items.filter(i=>i.category===cat); items = items.filter(i=>i.price>=min && i.price<=max); if(sort==='price-asc') items.sort((a,b)=>a.price-b.price); if(sort==='price-desc') items.sort((a,b)=>b.price-a.price); if(sort==='newest') items.sort((a,b)=>b.created - a.created); renderProducts(items); }
+    function resetFilters(){ document.getElementById('filterCategory').value='all'; document.getElementById('minPrice').value=''; document.getElementById('maxPrice').value=''; document.getElementById('sortSelect').value='newest'; renderAllProducts(); }
+
+    // Product upload with image preview and file support
+    document.getElementById('pImageFile').addEventListener('change', (e)=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload = ()=>{ document.getElementById('imagePreview').src = r.result; document.getElementById('imagePreview').classList.remove('hidden'); document.getElementById('pImage').value = r.result; }; r.readAsDataURL(f); });
+
+    function handleProductUpload(e){ e.preventDefault(); const name=document.getElementById('pName').value.trim(); const category=document.getElementById('pCategory').value; const price=Number(document.getElementById('pPrice').value); const oldPrice=Number(document.getElementById('pOldPrice').value); const image=document.getElementById('pImage').value.trim(); const sellerName=document.getElementById('pSellerName').value.trim(); const qr=document.getElementById('pQrCode').value.trim(); const sellerId=document.getElementById('currentSellerId').textContent || 'SELLER-8821'; if(!name||!price||!image||!sellerName||!qr) return alert('Fill all'); const newId = products.length? Math.max(...products.map(p=>p.id))+1 : 2; const prod={ id:newId, name, category, price, oldPrice, image, sellerName, sellerId, qrCode:qr, created:Date.now(), reviews:[] }; products.push(prod); persistAll(); renderAllProducts(); renderSellerProducts(); alert('Product published'); e.target.reset(); document.getElementById('imagePreview').classList.add('hidden'); }
+
+    function renderSellerProducts(){ const list=document.getElementById('sellerProductsList'); list.innerHTML=''; const sid=document.getElementById('currentSellerId').textContent||'SELLER-8821'; const sprod=products.filter(p=>p.sellerId===sid || p.sellerName.indexOf('Bittu')!==-1); if(sprod.length===0){ list.innerHTML='<p class="text-gray-500">You have not listed any products yet.</p>'; return; } sprod.forEach(p=>{ const el=document.createElement('div'); el.className='flex items-center gap-4'; el.innerHTML=`<img src="${p.image}" class="w-20 h-20 object-cover rounded"><div class="flex-1"><div class="font-semibold">${p.name}</div><div class="text-xs text-gray-500">${p.category}</div><div class="text-sm font-bold mt-1">₹${p.price} <span class="line-through text-gray-400 text-xs">₹${p.oldPrice}</span></div></div><div class="flex flex-col gap-2"><button class="px-3 py-2 bg-indigo-600 text-white rounded" onclick="openProductQuickView(${p.id})">QR & Pay</button><button class="px-3 py-2 bg-gray-100 rounded" onclick="deleteProduct(${p.id})">Delete</button></div>`; list.appendChild(el); }); }
+    function deleteProduct(id){ if(!confirm('Delete this product?')) return; products=products.filter(p=>p.id!==id); persistAll(); renderAllProducts(); renderSellerProducts(); }
+
+    // QR camera demo (capture frame as QR image)
+    let cameraStream=null;
+    async function openCameraForQr(){ try{ cameraStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}); const video = document.createElement('video'); video.autoplay=true; video.srcObject=cameraStream; const container=document.getElementById('sellerQrDisplayArea'); container.innerHTML=''; container.appendChild(video); const capBtn=document.createElement('button'); capBtn.className='mt-3 px-3 py-2 border rounded'; capBtn.textContent='Capture Frame'; capBtn.onclick=()=>{ const c=document.createElement('canvas'); c.width=video.videoWidth; c.height=video.videoHeight; const ctx=c.getContext('2d'); ctx.drawImage(video,0,0,c.width,c.height); const data=c.toDataURL('image/png'); container.innerHTML=`<img src="${data}" class="w-48 h-48 object-contain"><div class="mt-3 text-sm text-gray-700">Captured image used as QR</div>`; stopCamera(); }; container.appendChild(capBtn); } catch(e){ alert('Camera not available or permission denied'); } }
+    function stopCamera(){ if(cameraStream){ cameraStream.getTracks().forEach(t=>t.stop()); cameraStream=null; } }
+    function handleQrFile(e){ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ document.getElementById('sellerQrDisplayArea').innerHTML=`<img src="${r.result}" class="w-48 h-48 object-contain"><div class="mt-3 text-sm text-gray-700">Uploaded QR image</div>`; }; r.readAsDataURL(f); }
+
+    // basic search
+    document.getElementById('searchInput').addEventListener('input',(e)=>{ const q=e.target.value.trim().toLowerCase(); if(!q) renderAllProducts(); else renderProducts(products.filter(p=>p.name.toLowerCase().includes(q) || p.sellerName.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))); });
+
+    // Export functions using Storage.downloadCSV
+
+    // load initial UI
+    renderAllProducts(); renderSellerProducts(); updateCartCount(); loadOrders();
+
+    </script>
+</body>
+</html>
